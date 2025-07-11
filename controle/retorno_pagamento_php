@@ -1,0 +1,44 @@
+<?php
+require_once '../vendor/autoload.php';
+require_once '../modelo/DAO/Conexao.php';
+
+// Access Token para poder acessar a API
+MercadoPago\SDK::setAccessToken('APP_USR-8603215273708369-061422-d3734a3cc9faf4e1932acff063cb5c81-2495069309');
+
+// Pega o status da URL
+$status = $_GET['status'] ?? 'failure';
+$preferenceId = $_GET['preference_id'] ?? null;
+
+if (!$preferenceId) {
+    die("ID de preferência não recebido.");
+}
+
+// Busca a preferência no Mercado Pago
+try {
+    $preference = MercadoPago\Preference::find_by_id($preferenceId);
+    $referencia = $preference->external_reference ?? '';
+
+    if (!$referencia) {
+        die("Referência externa não encontrada.");
+    }
+
+    list($idUsuario, $idServico, $valor) = explode("|", $referencia);
+
+    $statusPagamento = match ($status) {
+        'success', 'approved' => 'pago',
+        'pending' => 'pendente',
+        default => 'falhado'
+    };
+
+    // Insere a contratação no banco
+    $pdo = Conexao::getInstance();
+    $stmt = $pdo->prepare("INSERT INTO contratacoes (id_servico, id_contratante, valor, status_pagamento, data_contratacao) VALUES (?, ?, ?, ?, NOW())");
+    $stmt->execute([$idServico, $idUsuario, $valor, $statusPagamento]);
+
+    // Redireciona para dashboard com mensagem
+    header("Location: ../dashboard.php?pagamento=" . $statusPagamento);
+    exit;
+
+} catch (Exception $e) {
+    die("Erro ao processar pagamento: " . $e->getMessage());
+}
