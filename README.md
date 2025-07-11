@@ -1,0 +1,8 @@
+- Autenticação segura com password_hash e password_verify
+- Dashboards personalizados para viajantes, prestadores e administradores
+- Catálogo de destinos e serviços exibidos em cards responsivos-
+-  Favoritos, para que o usuário salve e gerencie os serviços que mais gosta
+- Processo de contratação integrado ao Mercado Pago, com webhook e registro automático das transações
+- Painel de histórico completo para viajantes conferirem suas contratações
+- Sistema de suporte integrado, permitindo abertura e acompanhamento de chamados
+- Design UX/UI moderno, com sidebar, modais de login e formulários em conformidade com melhores práticas
