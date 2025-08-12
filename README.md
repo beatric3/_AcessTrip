@@ -5,7 +5,7 @@ O sistema oferece recursos para cadastro de usuários, gerenciamento de serviço
 
 ## Funcionalidades
 
-- ** Autenticação de Usuários**
+- **Autenticação de Usuários**
   - Cadastro com criptografia de senha (`password_hash`).
   - Login seguro e controle de sessão.
   - Painéis distintos para **Administrador**, **Prestador** e **Viajante**.
